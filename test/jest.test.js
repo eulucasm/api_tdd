@@ -1,4 +1,4 @@
-test('Devo conhecer as principais assertivas do jest', () =>{
+test('Devo conhecer as principais assertivas do jest', () => {
     let number = null;
     expect(number).toBeNull();
     number = 10;
@@ -10,12 +10,18 @@ test('Devo conhecer as principais assertivas do jest', () =>{
 
 });
 
-test('Devo saber trabalhar com objetos', ()=>{
-    const obj  ={name: 'John', email: 'john@mail.com'};
-    expect(obj).toHaveProperty('name','John');
+test('Devo saber trabalhar com objetos', () => {
+    const obj = {
+        name: 'John',
+        email: 'john@mail.com'
+    };
+    expect(obj).toHaveProperty('name', 'John');
     expect(obj.name).toBe('John');
 
-    const obj2  ={name: 'John', email: 'john@mail.com'};
+    const obj2 = {
+        name: 'John',
+        email: 'john@mail.com'
+    };
     expect(obj).toEqual(obj2);
 
 });

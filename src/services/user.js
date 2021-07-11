@@ -1,14 +1,14 @@
-module.experts = (app) => {
+module.exports = (app) => {
   const findAll = (filter = {}) => {
     return app.db('users').where(filter).select();
   };
 
-  const save = (user) => {
+  const save = async (user) => {
     if (!user.name) return {
       error: 'Nome é um atributo obrigatório'
     };
     if (!user.mail) return {
-      error: 'Mail é um atributo obrigatório'
+      error: 'Email é um atributo obrigatório'
     };
     if (!user.passwd) return {
       error: 'Senha é um atributo obrigatório'

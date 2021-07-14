@@ -1,7 +1,9 @@
 const request = require('supertest');
+const jwt = require('jwt-simple');
 const app = require('../../src/app');
 
 const MAIN_ROUTE = '/accounts';
+
 let user;
 
 beforeAll(async () => {
@@ -13,6 +15,7 @@ beforeAll(async () => {
     user = {
         ...res[0]
     };
+    user.token = jwt.encode(user, 'Segredo!');
 });
 
 test('Deve inserir uma conta com sucesso', () => {
@@ -21,6 +24,7 @@ test('Deve inserir uma conta com sucesso', () => {
             name: 'Acc #1',
             user_id: user.id
         })
+        .set('authorization', `bearer ${user.token}`)
         .then((result) => {
             expect(result.status).toBe(201);
             expect(result.body.name).toBe('Acc #1');
@@ -32,6 +36,7 @@ test('Não deve inserir uma conta sem nome', () => {
         .send({
             user_id: user.id
         })
+        .set('authorization', `bearer ${user.token}`)
         .then((result) => {
             expect(result.status).toBe(400);
             expect(result.body.error).toBe('Nome é um atributo obrigatório');
@@ -46,7 +51,8 @@ test('Deve listar todas as contas', () => {
             name: 'Acc list',
             user_id: user.id
         })
-        .then(() => request(app).get(MAIN_ROUTE))
+        .then(() => request(app).get(MAIN_ROUTE)
+            .set('authorization', `bearer ${user.token}`))
         .then((res) => {
             expect(res.status).toBe(200);
             expect(res.body.length).toBeGreaterThan(0);
@@ -62,7 +68,8 @@ test('Deve retornar uma conta por Id', () => {
             name: 'Acc By Id',
             user_id: user.id
         }, ['id'])
-        .then(acc => request(app).get(`${MAIN_ROUTE}/${acc[0].id}`))
+        .then(acc => request(app).get(`${MAIN_ROUTE}/${acc[0].id}`)
+            .set('authorization', `bearer ${user.token}`))
         .then((res) => {
             expect(res.status).toBe(200);
             expect(res.body.name).toBe('Acc By Id');
@@ -82,7 +89,7 @@ test('Deve alterar uma conta', () => {
         }, ['id'])
         .then(acc => request(app).put(`${MAIN_ROUTE}/${acc[0].id}`).send({
             name: 'Acc Updated'
-        }))
+        }).set('authorization', `bearer ${user.token}`))
         .then((res) => {
             expect(res.status).toBe(200);
             expect(res.body.name).toBe('Acc Updated');
@@ -97,7 +104,8 @@ test('Deve Remover uma conta', () => {
             name: 'Acc to remove',
             user_id: user.id
         }, ['id'])
-        .then(acc => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`))
+        .then(acc => request(app).delete(`${MAIN_ROUTE}/${acc[0].id}`)
+            .set('authorization', `bearer ${user.token}`))
         .then((res) => {
             expect(res.status).toBe(204);
         });

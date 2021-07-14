@@ -25,7 +25,13 @@ module.exports = (app) => {
         app.services.account.find({
                 id: req.params.id
             })
-            .then(result => res.status(200).json(result))
+            .then((result) => {
+                if (result.user_id !== req.user.id)
+                    return res.status(403).json({
+                        error: 'Este recurso não pertence ao usuário'
+                    });
+                return res.status(200).json(result);
+            })
             .catch(err => next(err));
     });
 

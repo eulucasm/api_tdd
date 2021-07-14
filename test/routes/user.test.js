@@ -4,6 +4,9 @@ const jwt = require('jwt-simple');
 
 const app = require('../../src/app');
 
+const MAIN_ROUTE = '/v1/users';
+
+
 const mail = `${Date.now()}@mail.com`;
 
 let user;
@@ -22,7 +25,7 @@ beforeAll(async () => {
 
 
 test('Deve listar todos os usuários', () => {
-    return request(app).get('/users')
+    return request(app).get(MAIN_ROUTE)
         .set('authorization', `bearer ${user.token}`)
         .then((res) => {
             expect(res.status).toBe(200);
@@ -31,7 +34,7 @@ test('Deve listar todos os usuários', () => {
 });
 
 test('Deve inserir usuário com sucesso', () => {
-    return request(app).post('/users')
+    return request(app).post(MAIN_ROUTE)
         .send({
             name: 'Walter Mitty',
             mail,
@@ -46,7 +49,7 @@ test('Deve inserir usuário com sucesso', () => {
 });
 
 test('Deve armazenar senha criptografada', async () => {
-    const res = await request(app).post('/users')
+    const res = await request(app).post(MAIN_ROUTE)
         .send({
             name: 'Walter Mitty',
             mail: `${Date.now()}@mail.com`,
@@ -66,7 +69,7 @@ test('Deve armazenar senha criptografada', async () => {
 });
 
 test('Não deve inserir usuário sem nome', () => {
-    return request(app).post('/users')
+    return request(app).post(MAIN_ROUTE)
         .send({
             mail: 'walter@mail.com',
             passwd: '123456'
@@ -80,7 +83,7 @@ test('Não deve inserir usuário sem nome', () => {
 });
 
 test('Não deve inserir usuário sem email', async () => {
-    const result = await request(app).post('/users')
+    const result = await request(app).post(MAIN_ROUTE)
         .send({
             name: 'Walter Mitty',
             passwd: '123456'
@@ -91,7 +94,7 @@ test('Não deve inserir usuário sem email', async () => {
 });
 
 test('Não deve inserir usuário sem senha', async () => {
-    const result = await request(app).post('/users')
+    const result = await request(app).post(MAIN_ROUTE)
         .send({
             name: 'Walter Mitty',
             mail: 'walter@mail.com'
@@ -102,7 +105,7 @@ test('Não deve inserir usuário sem senha', async () => {
 });
 
 test('Não deve inserir usuário com email existente', () => {
-    return request(app).post('/users')
+    return request(app).post(MAIN_ROUTE)
         .send({
             name: 'Walter Mitty',
             mail,

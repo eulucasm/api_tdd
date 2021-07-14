@@ -15,7 +15,7 @@ consign({
     .then('./config/middlewares.js')
     .then('./services')
     .then('./routes')
-    .then('./config/routes.js')
+    .then('./config/router.js')
     .into(app);
 
 app.get('/', (req, res) => {

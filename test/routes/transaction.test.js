@@ -119,20 +119,31 @@ test('Deve alterar uma transação', () => {
 
 });
 
-test('Deve Remover uma transação', () => {
-    return app.db('transactions')
-        .insert({
-            description: 'to Update',
-            date: new Date(),
-            ammount: 100,
-            type: 'I',
-            acc_id: accUser.id,
-        }, ['id']).then(trans => request(app).delete(`${MAIN_ROUTE}/${trans[0].id}`)
-            .set('authorization', `bearer ${user.token}`)
-            .send({
-                description: 'Updated'
-            })
-            .then((res) => {
-                expect(res.status).toBe(204);
-            }));
+test('Deve remover uma transação', () => {
+    return app.db('transactions').insert({
+        description: 'To delete',
+        date: new Date(),
+        ammount: 100,
+        type: 'I',
+        acc_id: accUser.id
+    }, ['id'], ).then(trans => request(app).delete(`${MAIN_ROUTE}/${trans[0].id}`)
+        .set('authorization', `bearer ${user.token}`)
+        .then((res) => {
+            expect(res.status).toBe(204);
+        }));
+});
+
+test('Não deve remover uma transação de outro usuário', () => {
+    return app.db('transactions').insert({
+        description: 'To delete',
+        date: new Date(),
+        ammount: 100,
+        type: 'I',
+        acc_id: accUser2.id
+    }, ['id'], ).then(trans => request(app).delete(`${MAIN_ROUTE}/${trans[0].id}`)
+        .set('authorization', `bearer ${user.token}`)
+        .then((res) => {
+            expect(res.status).toBe(403);
+            expect(res.body.error).toBe('Este recurso não pertence ao usuário');
+        }));
 });

@@ -2,10 +2,12 @@
   "cSpell.ignoreWords": [
     "api",
     "criptografada",
+    "expect",
     "logar",
     "postgres",
     "seubarriga",
-    "signin"
+    "signin",
+    "status"
   ],
   "cSpell.words": [
     "knexfile"

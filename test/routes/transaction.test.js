@@ -80,7 +80,7 @@ test('Deve inserir uma transação com sucesso', () => {
         });
 });
 
-test('Deve retornar uma transação por ID', () => {
+test('Deve retornar uma transação', () => {
     return app.db('transactions').insert({
         description: 'T ID',
         date: new Date(),
@@ -117,4 +117,22 @@ test('Deve alterar uma transação', () => {
 
         }));
 
+});
+
+test('Deve Remover uma transação', () => {
+    return app.db('transactions')
+        .insert({
+            description: 'to Update',
+            date: new Date(),
+            ammount: 100,
+            type: 'I',
+            acc_id: accUser.id,
+        }, ['id']).then(trans => request(app).delete(`${MAIN_ROUTE}/${trans[0].id}`)
+            .set('authorization', `bearer ${user.token}`)
+            .send({
+                description: 'Updated'
+            })
+            .then((res) => {
+                expect(res.status).toBe(204);
+            }));
 });

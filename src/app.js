@@ -31,6 +31,9 @@ app.use((err, req, res, next) => {
     if (name === 'ValidationError') res.status(400).json({
         error: message
     });
+    if (name === 'RecursoIndevidoError') res.status(403).json({
+        error: message
+    });
     else res.status(500).json({
         name,
         message,

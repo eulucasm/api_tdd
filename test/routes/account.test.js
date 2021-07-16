@@ -12,7 +12,7 @@ let user2;
 //afterAll = executa a ação depois de todos os testes
 //afterEach = executa a ação depois de cada teste
 
-beforeEach(async () => {
+beforeAll(async () => {
     const res = await app.services.user.save({
         name: 'User Account',
         mail: `${Date.now()}@mail.com`,
@@ -71,7 +71,9 @@ test('Não deve inserir uma conta de nome duplicado para o mesmo usuário', () =
         });
 });
 
-test('Deve listar apenas as contas do usuário', () => {
+test('Deve listar apenas as contas do usuário', async () => {
+    await app.db('transactions').del();
+    await app.db('accounts').del();
     return app.db('accounts').insert([{
             name: 'Acc User #1',
             user_id: user.id

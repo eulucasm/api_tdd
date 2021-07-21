@@ -154,3 +154,12 @@ describe('Ao salvar uma transferência inválida ...', () => {
     }, 'Conta #10002 não pertence ao usuário'));
 
 });
+
+test('Deve retornar uma transferencia por Id', () => {
+    return request(app).get(`${MAIN_ROUTE}/10000`)
+        .set('authorization', `bearer ${TOKEN}`)
+        .then((res) => {
+            expect(res.status).toBe(200);
+            expect(res.body.description).toBe('Transfer #1');
+        });
+});

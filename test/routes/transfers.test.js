@@ -299,3 +299,13 @@ describe('Ao remover transferencia', () => {
             });
     });
 });
+
+test('Não deve retornar transferencia de outro usuário', () => {
+    return request(app).get(`${MAIN_ROUTE}/10001`)
+        .set('authorization', `bearer ${TOKEN}`)
+        .then((res) => {
+            expect(res.status).toBe(403);
+            expect(res.body.error).toBe('Este recurso não pertence ao usuário');
+        });
+
+});

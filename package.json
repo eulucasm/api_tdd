@@ -12,15 +12,15 @@
         "lines": 80
       },
       "./src/services": {
-        "lines":100
+        "lines": 100
       }
     }
   },
-    "scripts": {
-    "start": "node src/server.js",
-    "test": "jest --coverage --runInBand --forceExit",
+  "scripts": {
+    "start": "NODE_ENV=prod && node src/server.js",
+    "test": "NODE_ENV=test && jest --coverage --runInBand --forceExit",
     "lint": "eslint src/** test/** --fix",
-    "secure-mode": "jest --watch --verbose=true"
+    "secure-mode": "NODE_ENV=test &&jest --watch --verbose=true"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +37,7 @@
     "body-parser": "1.18.3",
     "consign": "0.1.6",
     "express": "4.16.4",
+    "husky": "1.2.0",
     "jwt-simple": "0.5.5",
     "knex": "0.21.1",
     "knex-logger": "^0.1.0",

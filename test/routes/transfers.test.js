@@ -100,6 +100,12 @@ describe('Ao salvar uma transferência valida ...', () => {
 
     });
 
+    test('Ambas devem Ambas devem estar com status de realizadas', () => {
+        expect(income.status).toBe(true);
+        expect(outcome.status).toBe(true);
+
+    });
+
 
 });
 

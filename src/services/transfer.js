@@ -68,7 +68,8 @@ module.exports = (app) => {
                 ammount: transfer.ammount * -1,
                 type: 'O',
                 acc_id: transfer.acc_ori_id,
-                transfer_id: id
+                transfer_id: id,
+                status: true
 
             },
             {
@@ -77,7 +78,8 @@ module.exports = (app) => {
                 ammount: transfer.ammount,
                 type: 'I',
                 acc_id: transfer.acc_dest_id,
-                transfer_id: id
+                transfer_id: id,
+                status: true
             },
         ];
 
